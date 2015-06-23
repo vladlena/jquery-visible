@@ -39,13 +39,15 @@
 
 
         // Use this native browser method, if available.
-        var rec     = t.getBoundingClientRect(),
-            tViz    = rec.top    >= vpRect.top && rec.top    <  vpRect.bottom,
-            bViz    = rec.bottom >  vpRect.top && rec.bottom <= vpRect.bottom,
-            lViz    = rec.left   >= vpRect.left && rec.left   <  vpRect.right,
-            rViz    = rec.right  >  vpRect.left && rec.right  <= vpRect.right,
-            vVisible   = partial ? tViz || bViz : tViz && bViz,
-            hVisible   = partial ? lViz || rViz : lViz && rViz;
+        var rec       = t.getBoundingClientRect(),
+            tViz      = rec.top    >= vpRect.top && rec.top    <  vpRect.bottom,
+            bViz      = rec.bottom >  vpRect.top && rec.bottom <= vpRect.bottom,
+            vOverflow = rec.top < vpRect.top && rec.bottom > vpRect.bottom,
+            lViz      = rec.left   >= vpRect.left && rec.left   <  vpRect.right,
+            rViz      = rec.right  >  vpRect.left && rec.right  <= vpRect.right,
+            hOverflow = rec.left < vpRect.left && rec.right > vpRect.right,
+            vVisible  = partial ? tViz || bViz || vOverflow : tViz && bViz,
+            hVisible  = partial ? lViz || rViz || hOverflow : lViz && rViz;
 
         if(direction === 'both')
             return clientSize && vVisible && hVisible;
